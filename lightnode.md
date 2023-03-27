@@ -1,22 +1,22 @@
-## Sistem Gereksinimleri
+## System Requirements
 - Memory: 2 GB RAM
 - CPU: Single Core
 - Disk: 5 GB SSD
 
-## Tmux Kullanımı (Servis kullanacaksanız gerek yok)
-- Yeni tmux tekranı açmak: ```tmux```
-- Tmux ekranı listelemek: ```tmux ls```
-- Önceden açılmış tmux ekranını açmak: ```tmux attach -t tmuxsayfaismi```
-- Tmux sayfasından çıkmak:``ctrl+b`` basıp sonra sadece ``d`` ye basmak
+## Tmux Usage (No need if you will use service)
+- Opening a new tmux screen: ```tmux```
+- List tmux screen: ```tmux ls```
+- Opening a previously opened tmux screen: ```tmux attach -t tmuxsayfaismi```
+- Exiting the tmux page:``ctrl+b`` and then just press ``d`` press
 
-## Sistem Güncellemesi
+## System Update
 ```
 sudo apt update && sudo apt upgrade -y
 sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential git ncdu -y
 sudo apt install make -y
 ```
 
-## Go Yüklüyoruz
+## Installing Go
 ```
 ver="1.20"
 cd $HOME
@@ -28,9 +28,9 @@ echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bash_profile
 source $HOME/.bash_profile
 ```
 
-- ``go version`` yazdığınızda ``go version go1.20 linux/amd64`` sonucunu vermesi gerekiyor.
+- ``go version``  when you type ``go version go1.20 linux/amd64`` to the result of the investigation.
 
-## Celestia Light Node Yükleme
+## Celestia Light Node Installation
 ```
 cd $HOME 
 rm -rf celestia-node 
@@ -42,7 +42,7 @@ make install
 make cel-key 
 ```
 
-- ``celestia version`` yazdığımızda aşağıdaki çıktıyı almalıyız.
+- ``celestia version`` we should get the following output..
 ```
 Semantic version: v0.8.0-rc0
 Commit: 09cf0043b199f2a329b71b3895ab32c2b42cece3
@@ -51,12 +51,12 @@ System version: amd64/linux
 Golang version: go1.20 
 ```
 
-## Inıt İşlemi
-- Komut girildiğinde my_celes_key adında yeni bir cüzdan oluşacak. Bu cüzdanın adresini ve mnemoniclerini kaydetmeyi unutmayın!
+## Init Process
+- Entering the command will create a new wallet named my_celes_key. Remember to save the address and mnemonics of this wallet!
 ```
 celestia light init --p2p.network blockspacerace
 ```
-- Üstteki komut girildiğinde aşağıdaki gibi bir sonuç vermelidir.
+- When the above command is entered, it should give a result like the following.
 ```
 2023-03-27T21:05:40.875Z        INFO    node    nodebuilder/init.go:29  Initializing Light Node Store over '/root/.celestia-light-blockspacerace-0'
 2023-03-27T21:05:40.876Z        INFO    node    nodebuilder/init.go:61  Saved config    {"path": "/root/.celestia-light-blockspacerace-0/config.toml"}
@@ -70,14 +70,15 @@ ADDRESS: celestia1mfpxjqkr5xfcpqy4kt94fwsrpc5cfh4tc2dz47
 MNEMONIC (save this somewhere safe!!!): 
 stable theory promote obtain clerk loud wish know doctor multiply one stairs c........................
 ```
+NOTE: The core ip, rpc port, grpc port in the ExecStart command are taken from the endpoints provided in the Celestia documentation (https://docs.celestia.org/nodes/blockspace-race/#rpc-endpoints) and there are alternatives. If you want, you can change here and use different endpoints. 
 
-## Standart Başlatma 
-- Tmux ekranındayken aşağıdaki kod girilir.
+## Start Standard
+- Enter the following code while on the Tmux screen.
 ```
 celestia light start --core.ip https://rpc-blockspacerace.pops.one --core.rpc.port 26657 --core.grpc.port 9090 --keyring.accname my_celes_key --metrics.tls=false --metrics --metrics.endpoint otel.celestia.tools:4318 --gateway --gateway.addr localhost --gateway.port 26659 --p2p.network blockspacerace
 ```
 
-## Servis İle Başlatmak
+## Start with Service
 ```
 sudo tee <<EOF >/dev/null /etc/systemd/system/celestia-lightd.service
 [Unit]
@@ -100,7 +101,7 @@ systemctl enable celestia-lightd
 systemctl start celestia-lightd
 journalctl -u celestia-lightd.service -f
 ```
-- Sisteme eşitlendikten sonra loglar aşağıdakilere benzer şekilde görünmelidir.
+- Once synchronised to the system, the logs should look similar to the following.
 ```
 INFO    header/store    store/store.go:349      new head        {"height": 106151, "hash": "CD084A85460978EC8C9E4BA23EE3847B28A90A879245E46F68B8133E413EA7A3"}
 INFO    das     das/subscriber.go:34    new header received via subscription    {"height": 106151}
@@ -110,7 +111,7 @@ INFO    header/store    store/store.go:349      new head        {"height": 10615
 INFO    das     das/subscriber.go:34    new header received via subscription    {"height": 106152}
 INFO    das     das/worker.go:79        finished sampling headers       {"from": 106152, "to": 106152, "errors": 0, "finished (s)": 0.00005358}
 ```
-## Node ID Öğrenmek
+## Learning Node ID
 ```
 AUTH_TOKEN=$(celestia light auth admin --p2p.network blockspacerace)
 ```
@@ -121,5 +122,23 @@ curl -X POST \
      -d '{"jsonrpc":"2.0","id":0,"method":"p2p.Info","params":[]}' \
      http://localhost:26658
 ```
-- Bu kod girildiğinde aşağıdaki gibi bir sonuç alacaksınız ID="12D....." yazan değer sizin Node ID'niz, bunu da https://tiascan.com/light-nodes sitesinde aratarak Uptime ve diğer ayrıntılara ulaşabilirsiniz.
+- When this code is entered, you will get a result like below ID="12D....." is your Node ID, you can find Uptime and other details by searching this on https://tiascan.com/light-nodes.
 ![11111](https://user-images.githubusercontent.com/73176377/228071707-5f6639e6-b51c-48a9-957a-33a317f5653b.PNG)
+
+NOTE: /root/.celestia-light-blockspacerace-0 under the keys folder must be backed up.
+
+## Other Commands
+Service Check
+```
+systemctl status celestia-lightd
+```
+
+Node Restart
+```
+systemctl restart celestia-lightd
+```
+
+Node Durdurma
+```
+systemctl stop celestia-lightd
+```
