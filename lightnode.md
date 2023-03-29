@@ -36,7 +36,7 @@ cd $HOME
 rm -rf celestia-node 
 git clone https://github.com/celestiaorg/celestia-node.git 
 cd celestia-node/ 
-git checkout tags/v0.8.0-rc0 
+git checkout tags/v0.8.0
 make build 
 make install 
 make cel-key 
@@ -44,11 +44,11 @@ make cel-key
 
 - ``celestia version`` we should get the following output..
 ```
-Semantic version: v0.8.0-rc0
-Commit: 09cf0043b199f2a329b71b3895ab32c2b42cece3
-Build Date: Mon 27 Mar 2023 09:01:53 PM UTC
-System version: amd64/linux
-Golang version: go1.20 
+Semantic version: v0.8.0 
+Commit: ef582655342c73384a66314972428b152227e428 
+Build Date: Thu Dec 15 10:19:22 PM UTC 2022 
+System version: amd64/linux 
+Golang version: go1.19.1 
 ```
 
 ## Init Process
