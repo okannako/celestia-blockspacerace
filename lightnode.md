@@ -48,7 +48,7 @@ Semantic version: v0.8.0
 Commit: ef582655342c73384a66314972428b152227e428 
 Build Date: Thu Dec 15 10:19:22 PM UTC 2022 
 System version: amd64/linux 
-Golang version: go1.19.1 
+Golang version: go1.20
 ```
 
 ## Init Process
