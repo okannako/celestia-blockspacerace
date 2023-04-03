@@ -103,5 +103,5 @@ curl -X POST \
 
 ![bbbbb](https://user-images.githubusercontent.com/73176377/229496749-562366e9-6b79-4fa5-a266-1b6b3bdacb76.PNG)
 
-- NOTE: You need to back up the keys folder under the .celestia-bridge-blockspacerace-0 folder with WinSCP or a tool with the same function.
+- NOTE: You need to back up the keys folder under the ``.celestia-full-blockspacerace-0`` folder with WinSCP or a tool with the same function.
 
