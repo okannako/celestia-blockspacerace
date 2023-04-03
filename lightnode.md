@@ -125,7 +125,7 @@ curl -X POST \
 - When this code is entered, you will get a result like below ID="12D....." is your Node ID, you can find Uptime and other details by searching this on https://tiascan.com/light-nodes.
 ![11111](https://user-images.githubusercontent.com/73176377/228071707-5f6639e6-b51c-48a9-957a-33a317f5653b.PNG)
 
-NOTE: /root/.celestia-light-blockspacerace-0 under the keys folder must be backed up.
+NOTE: ```/root/.celestia-light-blockspacerace-0``` under the keys folder must be backed up.
 
 ## Other Commands
 Service Check
