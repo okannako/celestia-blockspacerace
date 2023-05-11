@@ -1,7 +1,7 @@
 ## System Requirements
 - Memory: 2 GB RAM
 - CPU: Single Core
-- Disk: 5 GB SSD
+- Disk: 25 GB SSD
 
 ## Tmux Usage (No need if you will use service)
 - Opening a new tmux screen: ```tmux```
