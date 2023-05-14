@@ -1,4 +1,8 @@
 #!/bin/bash
+
+while true
+do
+
 echo -e "\033[0;37m"
 echo "============================================================================================================"
 echo " #####   ####        ####        ####  ####    ######    ##########  ####    ####  ###########   ####  ####"
@@ -31,6 +35,7 @@ echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bash_profile
 source $HOME/.bash_profile
 go version && sleep 2
 echo -e "\e[1m\e[32m What is it you want to do? \e[0m" && sleep 2
+
 PS3='Select an action: '
 options=(
 "Light Node Install"
