@@ -339,7 +339,5 @@ break
 
 echo "Run the script again for options."
 exit
-;;
-*) 
 esac
 done
