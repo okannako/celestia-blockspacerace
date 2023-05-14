@@ -38,7 +38,7 @@ options=(
 "Full Storage Node Install"
 "Light Node Resetting Data"
 "Bridge Node Resetting Data"
-"Full Storage Resetting Data"
+"Full Storage Node Resetting Data"
 "What is Light Node ID?"
 "What is Bridge Node ID?"
 "What is Full Storage Node ID?"
