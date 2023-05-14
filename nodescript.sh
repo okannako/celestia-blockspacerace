@@ -58,7 +58,10 @@ make install
 make cel-key
 celestia version && sleep 3
 celestia light init --p2p.network blockspacerace
-echo "💥In this step, information about your wallet is shared. 💥PLEASE BACK UP THE MNEMONIC WORDS.💥 After backing up, you can continue by pressing the C key."
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+echo "In this step, information about your wallet is shared. >>>PLEASE BACK UP THE MNEMONIC WORDS.<<< After backing up, you can continue by pressing the C key."
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 read C
 sudo tee <<EOF >/dev/null /etc/systemd/system/celestia-lightd.service
 [Unit]
@@ -77,6 +80,11 @@ WantedBy=multi-user.target
 EOF
 systemctl enable celestia-lightd
 systemctl start celestia-lightd
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+echo "IMPORTANT: /root/.celestia-light-blockspacerace-0 under the keys folder must be backed up." && sleep 7
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 journalctl -u celestia-lightd.service -f
 break
 ;;
@@ -103,7 +111,8 @@ celestia-appd init "$NodeName" --chain-id blockspacerace-0
 
 cp $HOME/networks/blockspacerace/genesis.json $HOME/.celestia-app/config
 
-sed -i -e "s|^seeds *=.*|seeds = \"0293f2cf7184da95bc6ea6ff31c7e97578b9c7ff@65.109.106.95:26656\"|" $HOME/.celestia-app/config/config.toml
+peers="b766d36a1e3bcefc5e5befddfad7b4589ba28a21@162.55.242.83:26656,c97019ef9ee43e93ad9019514b612e6b8363c3fd@138.201.63.38:26686,62f6abc162db99389f13a1cdf1abaeb6efb647a7@35.210.78.75:26656,6c73374cb78a543e2dd3eb218c29386392da2cf5@35.210.99.77:26656,5fa6853eb52bc3a5ff1fe56b988515d16644819a@65.21.232.33:2000,de36dc2bc32ecaacafb213d173f6218f93ebb306@144.76.105.14:26656,ae95e8d93a0822a763823551c163d15d4cdce944@116.202.227.117:20656,af66f28f19f747bd2b5a18d91d143dc8e035f86a@47.147.226.228:52656,d5519e378247dfb61dfe90652d1fe3e2b3005a5b@65.109.68.190:12056,0196b56324c6fd3dd31110d3cb06dc169a1e1310@194.62.97.31:26656"
+sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$peers\"|" $HOME/.celestia-app/config/config.toml
 
 PRUNING="nothing"
 sed -i -e "s/^pruning *=.*/pruning = \"$PRUNING\"/" $HOME/.celestia-app/config/app.toml
@@ -129,6 +138,10 @@ EOF
 sudo systemctl enable celestia-appd
 sudo systemctl start celestia-appd
 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+echo "IMPORTANT: /root/.celestia-appd under the config folder must be backed up." && sleep 7
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 cd $HOME 
 rm -rf celestia-node 
 git clone https://github.com/celestiaorg/celestia-node.git 
@@ -141,8 +154,11 @@ celestia version && sleep 3
 
 celestia bridge init --core.ip localhost --core.rpc.port 26657 --core.grpc.port 9090 --p2p.network blockspacerace
 
-echo "💥In this step, information about your wallet is shared.💥PLEASE BACK UP THE MNEMONIC WORDS.💥 After backing up, you can continue by pressing the C key."
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+echo "In this step, information about your wallet is shared.>>>PLEASE BACK UP THE MNEMONIC WORDS.<<< After backing up, you can continue by pressing the C key."
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 read C
+
 
 sudo tee <<EOF >/dev/null /etc/systemd/system/celestia-bridge.service
 [Unit]
@@ -162,7 +178,118 @@ EOF
 
 sudo systemctl enable celestia-bridge
 sudo systemctl start celestia-bridge
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+echo "IMPORTANT: /root/.celestia-bridge-blockspacerace-0 under the keys folder must be backed up." && sleep 7
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 sudo journalctl -u celestia-bridge.service -f
+
+break
+;;
+
+"Full Storage Node Install")
+
+cd $HOME 
+rm -rf celestia-node 
+git clone https://github.com/celestiaorg/celestia-node.git 
+cd celestia-node/ 
+git checkout tags/v0.9.4 
+make build 
+make install 
+make cel-key 
+celestia version && sleep 3
+
+celestia full init --p2p.network blockspacerace
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+echo "In this step, information about your wallet is shared.>>>PLEASE BACK UP THE MNEMONIC WORDS.<<< After backing up, you can continue by pressing the C key."
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+sudo tee <<EOF >/dev/null /etc/systemd/system/celestia-fulld.service
+[Unit]
+Description=celestia-fulld Full Node
+After=network-online.target
+
+[Service]
+User=$USER
+ExecStart=/usr/local/bin/celestia full start --core.ip https://rpc-blockspacerace.pops.one --core.rpc.port 26657 --core.grpc.port 9090 --keyring.accname my_celes_key --metrics.tls=false --metrics --metrics.endpoint otel.celestia.tools:4318 --gateway --gateway.addr localhost --gateway.port 26659 --p2p.network blockspacerace
+Restart=on-failure
+RestartSec=3
+LimitNOFILE=4096
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+systemctl enable celestia-fulld
+systemctl start celestia-fulld
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+echo "IMPORTANT: /root/.celestia-full-blockspacerace-0 under the keys folder must be backed up." && sleep 7
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+journalctl -u celestia-fulld.service -f
+
+break
+;;
+
+"Light Node Resetting Data")
+
+celestia light unsafe-reset-store --p2p.network blockspacerace
+
+break
+;;
+
+"Bridge Node Resetting Data")
+
+celestia bridge unsafe-reset-store --p2p.network blockspacerace
+
+break
+;;
+
+"Full Storage Node Resetting Data")
+
+celestia full unsafe-reset-store --p2p.network blockspacerace
+
+break
+;;
+
+"What is Light Node ID?")
+
+AUTH_TOKEN=$(celestia light auth admin --p2p.network blockspacerace)
+
+curl -X POST \
+     -H "Authorization: Bearer $AUTH_TOKEN" \
+     -H 'Content-Type: application/json' \
+     -d '{"jsonrpc":"2.0","id":0,"method":"p2p.Info","params":[]}' \
+     http://localhost:26658
+
+break
+;;
+
+"What is Bridge Node ID?")
+
+AUTH_TOKEN=$(celestia bridge auth admin --p2p.network blockspacerace)
+
+curl -X POST \
+     -H "Authorization: Bearer $AUTH_TOKEN" \
+     -H 'Content-Type: application/json' \
+     -d '{"jsonrpc":"2.0","id":0,"method":"p2p.Info","params":[]}' \
+     http://localhost:26658
+
+break
+;;
+
+"What is Full Storage Node ID?")
+
+AUTH_TOKEN=$(celestia full auth admin --p2p.network blockspacerace)
+
+curl -X POST \
+     -H "Authorization: Bearer $AUTH_TOKEN" \
+     -H 'Content-Type: application/json' \
+     -d '{"jsonrpc":"2.0","id":0,"method":"p2p.Info","params":[]}' \
+     http://localhost:26658
 
 break
 ;;
@@ -170,7 +297,7 @@ break
 "Exit")
 exit
 ;;
-*) echo "invalid option $REPLY";;
+*) echo "Run the script again for options.";;
 esac
 done
 done
