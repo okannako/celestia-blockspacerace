@@ -19,7 +19,7 @@ sudo apt update && sudo apt upgrade -y
 sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential git ncdu -y
 sudo apt install make -y && cd $HOME
 sleep 1
-
+echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 echo -e "\e[1m\e[32m Install Go \e[0m" && sleep 2
 ver="1.20.3"
 cd $HOME
@@ -38,7 +38,7 @@ options=(
 "Full Storage Node Install"
 "Light Node Resetting Data"
 "Bridge Node Resetting Data"
-"Full Storage Node Resetting Data"
+"Full Storage Resetting Data"
 "What is Light Node ID?"
 "What is Bridge Node ID?"
 "What is Full Storage Node ID?"
@@ -48,6 +48,24 @@ do
 case $opt in
 
 "Light Node Install")
+
+echo -e "\e[1m\e[32m Updates \e[0m" && sleep 2
+sudo apt update && sudo apt upgrade -y
+sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential git ncdu -y
+sudo apt install make -y && cd $HOME
+sleep 1
+
+echo -e "\e[1m\e[32m Install Go \e[0m" && sleep 2
+ver="1.20.3"
+cd $HOME
+wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz"
+sudo rm -rf /usr/local/go
+sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz"
+rm "go$ver.linux-amd64.tar.gz"
+echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bash_profile
+source $HOME/.bash_profile
+go version && sleep 2
+
 cd $HOME 
 rm -rf celestia-node 
 git clone https://github.com/celestiaorg/celestia-node.git 
@@ -56,12 +74,12 @@ git checkout tags/v0.9.4
 make build 
 make install 
 make cel-key
-celestia version
-sleep 3
-
+celestia version && sleep 3
 celestia light init --p2p.network blockspacerace
 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 echo "In this step, information about your wallet is shared. >>>PLEASE BACK UP THE MNEMONIC WORDS.<<< After backing up, you can continue by pressing the C key."
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 read C
 
 sudo tee <<EOF >/dev/null /etc/systemd/system/celestia-lightd.service
@@ -82,15 +100,33 @@ EOF
 systemctl enable celestia-lightd
 systemctl start celestia-lightd
 
-echo "IMPORTANT: /root/.celestia-light-blockspacerace-0 under the keys folder must be backed up."
-sleep 7
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+echo "IMPORTANT: /root/.celestia-light-blockspacerace-0 under the keys folder must be backed up." && sleep 7
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 journalctl -u celestia-lightd.service -f
-
 break
 ;;
 
 "Bridge Node Install")
+
+echo -e "\e[1m\e[32m Updates \e[0m" && sleep 2
+sudo apt update && sudo apt upgrade -y
+sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential git ncdu -y
+sudo apt install make -y && cd $HOME
+sleep 1
+
+echo -e "\e[1m\e[32m Install Go \e[0m" && sleep 2
+ver="1.20.3"
+cd $HOME
+wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz"
+sudo rm -rf /usr/local/go
+sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz"
+rm "go$ver.linux-amd64.tar.gz"
+echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bash_profile
+source $HOME/.bash_profile
+go version && sleep 2
+
 cd $HOME 
 rm -rf celestia-app 
 git clone https://github.com/celestiaorg/celestia-app.git 
@@ -139,8 +175,9 @@ EOF
 sudo systemctl enable celestia-appd
 sudo systemctl start celestia-appd
 
-echo "IMPORTANT: /root/.celestia-appd under the config folder must be backed up."
-sleep 7
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+echo "IMPORTANT: /root/.celestia-appd under the config folder must be backed up." && sleep 7
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 cd $HOME 
 rm -rf celestia-node 
@@ -150,13 +187,15 @@ git checkout tags/v0.9.4
 make build 
 make install 
 make cel-key 
-celestia version
-sleep 3
+celestia version && sleep 3
 
 celestia bridge init --core.ip localhost --core.rpc.port 26657 --core.grpc.port 9090 --p2p.network blockspacerace
 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 echo "In this step, information about your wallet is shared.>>>PLEASE BACK UP THE MNEMONIC WORDS.<<< After backing up, you can continue by pressing the C key."
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 read C
+
 
 sudo tee <<EOF >/dev/null /etc/systemd/system/celestia-bridge.service
 [Unit]
@@ -177,8 +216,9 @@ EOF
 sudo systemctl enable celestia-bridge
 sudo systemctl start celestia-bridge
 
-echo "IMPORTANT: /root/.celestia-bridge-blockspacerace-0 under the keys folder must be backed up."
-sleep 7
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+echo "IMPORTANT: /root/.celestia-bridge-blockspacerace-0 under the keys folder must be backed up." && sleep 7
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 sudo journalctl -u celestia-bridge.service -f
 
@@ -186,6 +226,23 @@ break
 ;;
 
 "Full Storage Node Install")
+
+echo -e "\e[1m\e[32m Updates \e[0m" && sleep 2
+sudo apt update && sudo apt upgrade -y
+sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential git ncdu -y
+sudo apt install make -y && cd $HOME
+sleep 1
+
+echo -e "\e[1m\e[32m Install Go \e[0m" && sleep 2
+ver="1.20.3"
+cd $HOME
+wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz"
+sudo rm -rf /usr/local/go
+sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz"
+rm "go$ver.linux-amd64.tar.gz"
+echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bash_profile
+source $HOME/.bash_profile
+go version && sleep 2
 
 cd $HOME 
 rm -rf celestia-node 
@@ -195,13 +252,13 @@ git checkout tags/v0.9.4
 make build 
 make install 
 make cel-key 
-celestia version
-sleep 3
+celestia version && sleep 3
 
 celestia full init --p2p.network blockspacerace
 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 echo "In this step, information about your wallet is shared.>>>PLEASE BACK UP THE MNEMONIC WORDS.<<< After backing up, you can continue by pressing the C key."
-read C
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 sudo tee <<EOF >/dev/null /etc/systemd/system/celestia-fulld.service
 [Unit]
@@ -222,8 +279,9 @@ EOF
 systemctl enable celestia-fulld
 systemctl start celestia-fulld
 
-echo "IMPORTANT: /root/.celestia-full-blockspacerace-0 under the keys folder must be backed up."
-sleep 7
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+echo "IMPORTANT: /root/.celestia-full-blockspacerace-0 under the keys folder must be backed up." && sleep 7
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 journalctl -u celestia-fulld.service -f
 
@@ -232,30 +290,21 @@ break
 
 "Light Node Resetting Data")
 
-sudo systemctl stop celestia-lightd
-sudo celestia light unsafe-reset-store --p2p.network blockspacerace
-sudo systemctl restart celestia-lightd
-sudo journalctl -u celestia-lightd.service -f
+celestia light unsafe-reset-store --p2p.network blockspacerace
 
 break
 ;;
 
 "Bridge Node Resetting Data")
 
-sudo systemctl stop celestia-bridge
-sudo celestia bridge unsafe-reset-store --p2p.network blockspacerace
-sudo systemctl restart celestia-bridge
-sudo journalctl -u celestia-bridge.service -f
+celestia bridge unsafe-reset-store --p2p.network blockspacerace
 
 break
 ;;
 
 "Full Storage Node Resetting Data")
 
-sudo systemctl stop celestia-fulld
-sudo celestia full unsafe-reset-store --p2p.network blockspacerace
-sudo systemctl restart celestia-fulld
-sudo journalctl -u celestia-fulld.service -f
+celestia full unsafe-reset-store --p2p.network blockspacerace
 
 break
 ;;
