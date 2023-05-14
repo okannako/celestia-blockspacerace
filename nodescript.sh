@@ -232,21 +232,30 @@ break
 
 "Light Node Resetting Data")
 
-celestia light unsafe-reset-store --p2p.network blockspacerace
+sudo systemctl stop celestia-lightd
+sudo celestia light unsafe-reset-store --p2p.network blockspacerace
+sudo systemctl restart celestia-lightd
+sudo journalctl -u celestia-lightd.service -f
 
 break
 ;;
 
 "Bridge Node Resetting Data")
 
-celestia bridge unsafe-reset-store --p2p.network blockspacerace
+sudo systemctl stop celestia-bridge
+sudo celestia bridge unsafe-reset-store --p2p.network blockspacerace
+sudo systemctl restart celestia-bridge
+sudo journalctl -u celestia-bridge.service -f
 
 break
 ;;
 
 "Full Storage Node Resetting Data")
 
-celestia full unsafe-reset-store --p2p.network blockspacerace
+sudo systemctl stop celestia-fulld
+sudo celestia full unsafe-reset-store --p2p.network blockspacerace
+sudo systemctl restart celestia-fulld
+sudo journalctl -u celestia-fulld.service -f
 
 break
 ;;
