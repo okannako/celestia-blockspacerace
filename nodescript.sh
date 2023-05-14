@@ -19,7 +19,7 @@ sudo apt update && sudo apt upgrade -y
 sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential git ncdu -y
 sudo apt install make -y && cd $HOME
 sleep 1
-echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+
 echo -e "\e[1m\e[32m Install Go \e[0m" && sleep 2
 ver="1.20.3"
 cd $HOME
@@ -59,9 +59,9 @@ make cel-key
 celestia version && sleep 3
 celestia light init --p2p.network blockspacerace
 
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+echo +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 echo "In this step, information about your wallet is shared. >>>PLEASE BACK UP THE MNEMONIC WORDS.<<< After backing up, you can continue by pressing the C key."
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+echo +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 read C
 sudo tee <<EOF >/dev/null /etc/systemd/system/celestia-lightd.service
 [Unit]
@@ -81,9 +81,10 @@ EOF
 systemctl enable celestia-lightd
 systemctl start celestia-lightd
 
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-echo "IMPORTANT: /root/.celestia-light-blockspacerace-0 under the keys folder must be backed up." && sleep 7
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+echo ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+echo "IMPORTANT: /root/.celestia-light-blockspacerace-0 under the keys folder must be backed up."
+echo ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+sleep 7
 
 journalctl -u celestia-lightd.service -f
 break
@@ -138,9 +139,10 @@ EOF
 sudo systemctl enable celestia-appd
 sudo systemctl start celestia-appd
 
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-echo "IMPORTANT: /root/.celestia-appd under the config folder must be backed up." && sleep 7
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+echo ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+echo "IMPORTANT: /root/.celestia-appd under the config folder must be backed up."
+echo ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+sleep 7
 
 cd $HOME 
 rm -rf celestia-node 
@@ -158,7 +160,6 @@ celestia bridge init --core.ip localhost --core.rpc.port 26657 --core.grpc.port 
 echo "In this step, information about your wallet is shared.>>>PLEASE BACK UP THE MNEMONIC WORDS.<<< After backing up, you can continue by pressing the C key."
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 read C
-
 
 sudo tee <<EOF >/dev/null /etc/systemd/system/celestia-bridge.service
 [Unit]
@@ -179,9 +180,10 @@ EOF
 sudo systemctl enable celestia-bridge
 sudo systemctl start celestia-bridge
 
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-echo "IMPORTANT: /root/.celestia-bridge-blockspacerace-0 under the keys folder must be backed up." && sleep 7
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+echo +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+echo "IMPORTANT: /root/.celestia-bridge-blockspacerace-0 under the keys folder must be backed up."
+echo +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+sleep 7
 
 sudo journalctl -u celestia-bridge.service -f
 
@@ -225,9 +227,10 @@ EOF
 systemctl enable celestia-fulld
 systemctl start celestia-fulld
 
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-echo "IMPORTANT: /root/.celestia-full-blockspacerace-0 under the keys folder must be backed up." && sleep 7
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+echo +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+echo "IMPORTANT: /root/.celestia-full-blockspacerace-0 under the keys folder must be backed up."
+echo +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+sleep 7
 
 journalctl -u celestia-fulld.service -f
 
