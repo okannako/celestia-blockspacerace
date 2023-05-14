@@ -56,13 +56,14 @@ git checkout tags/v0.9.4
 make build 
 make install 
 make cel-key
-celestia version && sleep 3
+celestia version
+sleep 3
+
 celestia light init --p2p.network blockspacerace
 
-echo +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 echo "In this step, information about your wallet is shared. >>>PLEASE BACK UP THE MNEMONIC WORDS.<<< After backing up, you can continue by pressing the C key."
-echo +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 read C
+
 sudo tee <<EOF >/dev/null /etc/systemd/system/celestia-lightd.service
 [Unit]
 Description=celestia-lightd Light Node
@@ -81,12 +82,11 @@ EOF
 systemctl enable celestia-lightd
 systemctl start celestia-lightd
 
-echo ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 echo "IMPORTANT: /root/.celestia-light-blockspacerace-0 under the keys folder must be backed up."
-echo ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 sleep 7
 
 journalctl -u celestia-lightd.service -f
+
 break
 ;;
 
@@ -139,9 +139,7 @@ EOF
 sudo systemctl enable celestia-appd
 sudo systemctl start celestia-appd
 
-echo ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 echo "IMPORTANT: /root/.celestia-appd under the config folder must be backed up."
-echo ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 sleep 7
 
 cd $HOME 
@@ -152,13 +150,12 @@ git checkout tags/v0.9.4
 make build 
 make install 
 make cel-key 
-celestia version && sleep 3
+celestia version
+sleep 3
 
 celestia bridge init --core.ip localhost --core.rpc.port 26657 --core.grpc.port 9090 --p2p.network blockspacerace
 
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 echo "In this step, information about your wallet is shared.>>>PLEASE BACK UP THE MNEMONIC WORDS.<<< After backing up, you can continue by pressing the C key."
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 read C
 
 sudo tee <<EOF >/dev/null /etc/systemd/system/celestia-bridge.service
@@ -180,9 +177,7 @@ EOF
 sudo systemctl enable celestia-bridge
 sudo systemctl start celestia-bridge
 
-echo +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 echo "IMPORTANT: /root/.celestia-bridge-blockspacerace-0 under the keys folder must be backed up."
-echo +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 sleep 7
 
 sudo journalctl -u celestia-bridge.service -f
@@ -200,13 +195,13 @@ git checkout tags/v0.9.4
 make build 
 make install 
 make cel-key 
-celestia version && sleep 3
+celestia version
+sleep 3
 
 celestia full init --p2p.network blockspacerace
 
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 echo "In this step, information about your wallet is shared.>>>PLEASE BACK UP THE MNEMONIC WORDS.<<< After backing up, you can continue by pressing the C key."
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+read C
 
 sudo tee <<EOF >/dev/null /etc/systemd/system/celestia-fulld.service
 [Unit]
@@ -227,9 +222,7 @@ EOF
 systemctl enable celestia-fulld
 systemctl start celestia-fulld
 
-echo +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 echo "IMPORTANT: /root/.celestia-full-blockspacerace-0 under the keys folder must be backed up."
-echo +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 sleep 7
 
 journalctl -u celestia-fulld.service -f
