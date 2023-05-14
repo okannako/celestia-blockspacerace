@@ -336,8 +336,9 @@ break
 ;;
 
 "Exit")
+
+echo "Run the script again for options."
 exit
-echo "Run the script again for options." 
 ;;
 *) 
 esac
