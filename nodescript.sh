@@ -453,6 +453,5 @@ break
 
 "Exit")
 exit
-;;
 esac
 done
