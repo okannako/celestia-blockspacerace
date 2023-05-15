@@ -453,7 +453,7 @@ break
 "Exit")
 exit
 ;;
-*) echo "invalid option $REPLY";;
+*) echo "invalid option";;
 esac
 done
 done
