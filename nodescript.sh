@@ -20,7 +20,7 @@ PS3='Select an action: '
 options=(
 "Validator Node Install"
 "Validator Node Control"
-"Create Validator""
+"Create Validator"
 "Light Node Install"
 "Bridge Node Install"
 "Full Storage Node Install"
