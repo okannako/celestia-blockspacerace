@@ -72,7 +72,7 @@ celestia-appd init "$NodeName" --chain-id blockspacerace-0
 cp $HOME/networks/blockspacerace/genesis.json $HOME/.celestia-app/config
 
 peers="b766d36a1e3bcefc5e5befddfad7b4589ba28a21@162.55.242.83:26656,c97019ef9ee43e93ad9019514b612e6b8363c3fd@138.201.63.38:26686,62f6abc162db99389f13a1cdf1abaeb6efb647a7@35.210.78.75:26656,6c73374cb78a543e2dd3eb218c29386392da2cf5@35.210.99.77:26656,5fa6853eb52bc3a5ff1fe56b988515d16644819a@65.21.232.33:2000,de36dc2bc32ecaacafb213d173f6218f93ebb306@144.76.105.14:26656,ae95e8d93a0822a763823551c163d15d4cdce944@116.202.227.117:20656,af66f28f19f747bd2b5a18d91d143dc8e035f86a@47.147.226.228:52656,d5519e378247dfb61dfe90652d1fe3e2b3005a5b@65.109.68.190:12056,0196b56324c6fd3dd31110d3cb06dc169a1e1310@194.62.97.31:26656"
-sed -i 's|^seeds *=.*|seeds = "'$SEEDS'"|; s|^persistent_peers *=.*|persistent_peers = "'$PEERS'"|' $HOME/.celestia-app/config/config.toml
+sed -i -e "/persistent_peers =/ s/= .*/= \"$peers\"/" $HOME/.celestia-app/config/config.toml
 
 PRUNING="nothing"
 sed -i -e "s/^pruning *=.*/pruning = \"$PRUNING\"/" $HOME/.celestia-app/config/app.toml
