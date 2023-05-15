@@ -124,7 +124,7 @@ celestia-appd tx staking create-validator \
 --from=$WalletName \
 --gas-adjustment=1.4 \
 --gas=auto \
---gas-prices=0.0"utia
+--gas-prices=0.01utia
 
 echo -e '\e[36mIMPORTANT: After the validator creation step is finished, be sure to back up the config folder in the .celestia-appd folder.\e[39m'
 sleep 10
