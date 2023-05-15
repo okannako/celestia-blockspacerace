@@ -35,6 +35,118 @@ select opt in "${options[@]}"
 do
 case $opt in
 
+"Validator Node Install")
+
+echo -e "\e[1m\e[32m Updates \e[0m" && sleep 2
+sudo apt update && sudo apt upgrade -y
+sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential git ncdu -y
+sudo apt install make -y && cd $HOME
+sleep 1
+
+echo -e "\e[1m\e[32m Install Go \e[0m" && sleep 2
+ver="1.20.3"
+cd $HOME
+wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz"
+sudo rm -rf /usr/local/go
+sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz"
+rm "go$ver.linux-amd64.tar.gz"
+echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bash_profile
+source $HOME/.bash_profile
+go version && sleep 2
+
+cd $HOME 
+rm -rf celestia-app 
+git clone https://github.com/celestiaorg/celestia-app.git 
+cd celestia-app/ 
+APP_VERSION=v0.13.0
+git checkout tags/$APP_VERSION -b $APP_VERSION 
+make install
+celestia-appd && sleep 3
+
+echo "NodeName:"
+read NODENAME
+echo export NODENAME=${NodeName} >> $HOME/.bash_profile
+
+celestia-appd init "$NodeName" --chain-id blockspacerace-0
+
+cp $HOME/networks/blockspacerace/genesis.json $HOME/.celestia-app/config
+
+curl -Ls https://snapshots.kjnodes.com/celestia-testnet/addrbook.json > $HOME/.celestia-app/config/addrbook.json
+
+PRUNING="nothing"
+sed -i -e "s/^pruning *=.*/pruning = \"$PRUNING\"/" $HOME/.celestia-app/config/app.toml
+
+celestia-appd tendermint unsafe-reset-all --home $HOME/.celestia-app
+
+echo -e '\e[1m\e[32m Downloading Snapshot for fast synchronisation to the current block. \e[0m' && sleep 2
+
+curl -L https://snapshots.kjnodes.com/celestia-testnet/snapshot_latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.celestia-app
+
+sudo tee <<EOF >/dev/null /etc/systemd/system/celestia-appd.service
+[Unit]
+Description=celestia-appd Cosmos daemon
+After=network-online.target
+
+[Service]
+User=$USER
+ExecStart=$HOME/go/bin/celestia-appd start
+Restart=on-failure
+RestartSec=3
+LimitNOFILE=4096
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo systemctl enable celestia-appd
+sudo systemctl start celestia-appd
+
+echo "WalletName:"
+read WalletName
+echo export WalletName=${WalletName} >> $HOME/.bash_profile
+celestia-appd keys add $WalletName
+
+echo -e '\e[36mIn this step, information about your wallet is shared. >>>PLEASE BACK UP THE MNEMONIC WORDS.<<< After backing up, you can continue by pressing the Enter key.\e[39m'
+read Enter
+
+echo -e '\e[36mIMPORTANT: Wait for synchronisation to the current block. To check, restart the script and select the relevant option.\e[39m'
+sleep 7
+sudo journalctl -u celestia-appd -f
+
+break
+;;
+
+"Validator Node Control")
+
+celestia-appd tx staking create-validator \
+--amount=1000000utia \
+--pubkey=$(celestia-appd tendermint show-validator) \
+--moniker="$NodeName" \
+--chain-id=blockspacerace-0 \
+--commission-rate=0.05 \
+--commission-max-rate=0.20 \
+--commission-max-change-rate=0.01 \
+--min-self-delegation=1 \
+--from=$WalletName \
+--gas-adjustment=1.4 \
+--gas=auto \
+--gas-prices=0.0"utia
+
+echo -e '\e[36mIMPORTANT: After the validator creation step is finished, be sure to back up the config folder in the .celestia-appd folder.\e[39m'
+sleep 10
+
+break
+;;
+
+"Create Validator")
+
+celestia-appd status 2>&1 | jq .SyncInfo
+echo -e '\e[36mIMPORTANT: When "catching_up": false, you have accessed the current block and you can run the script again and Create Validator. Before creating a validator, be sure to request a test token on Discord to your wallet.\e[39m'
+sleep 10
+
+break
+;;
+
 "Light Node Install")
 
 echo -e "\e[1m\e[32m Updates \e[0m" && sleep 2
