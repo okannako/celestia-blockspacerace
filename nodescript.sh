@@ -103,6 +103,15 @@ break
 
 "Validator Node Control")
 
+celestia-appd status 2>&1 | jq .SyncInfo
+echo -e '\e[36mIMPORTANT: When "catching_up": false, you have accessed the current block and you can run the script again and Create Validator. Before creating a validator, be sure to request a test token on Discord to your wallet.\e[39m'
+sleep 10
+
+break
+;;
+
+"Create Validator")
+
 celestia-appd tx staking create-validator \
 --amount=1000000utia \
 --pubkey=$(celestia-appd tendermint show-validator) \
@@ -118,15 +127,6 @@ celestia-appd tx staking create-validator \
 --gas-prices=0.0"utia
 
 echo -e '\e[36mIMPORTANT: After the validator creation step is finished, be sure to back up the config folder in the .celestia-appd folder.\e[39m'
-sleep 10
-
-break
-;;
-
-"Create Validator")
-
-celestia-appd status 2>&1 | jq .SyncInfo
-echo -e '\e[36mIMPORTANT: When "catching_up": false, you have accessed the current block and you can run the script again and Create Validator. Before creating a validator, be sure to request a test token on Discord to your wallet.\e[39m'
 sleep 10
 
 break
