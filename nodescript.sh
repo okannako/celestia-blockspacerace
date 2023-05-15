@@ -110,28 +110,6 @@ sleep 10
 break
 ;;
 
-"Create Validator")
-
-celestia-appd tx staking create-validator \
---amount=1000000utia \
---pubkey=$(celestia-appd tendermint show-validator) \
---moniker="$NodeName" \
---chain-id=blockspacerace-0 \
---commission-rate=0.05 \
---commission-max-rate=0.20 \
---commission-max-change-rate=0.01 \
---min-self-delegation=1 \
---from=$WalletName \
---gas-adjustment=1.4 \
---gas=auto \
---gas-prices=0.0"utia
-
-echo -e '\e[36mIMPORTANT: After the validator creation step is finished, be sure to back up the config folder in the .celestia-appd folder.\e[39m'
-sleep 10
-
-break
-;;
-
 "Light Node Install")
 
 echo -e "\e[1m\e[32m Updates \e[0m" && sleep 2
