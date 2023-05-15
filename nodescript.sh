@@ -454,6 +454,5 @@ break
 "Exit")
 exit
 ;;
-*) echo "Run the script again for options.";;
 esac
 done
