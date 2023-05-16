@@ -31,7 +31,7 @@ cd $HOME
 rm -rf celestia-node 
 git clone https://github.com/celestiaorg/celestia-node.git 
 cd celestia-node/ 
-git checkout tags/v0.9.2 
+git checkout tags/v0.9.5 
 make build 
 make install 
 make cel-key 
@@ -39,7 +39,7 @@ make cel-key
 
 - ``celestia version`` we should get the following output..
 ```
-Semantic version: tags/v0.9.2
+Semantic version: tags/v0.9.5
 ```
 
 ## Inıt Process
